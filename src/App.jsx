@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router'
 import { LoginScreen } from './Screens/LoginScreen/LoginScreen'
 import { RegisterScreen } from './Screens/RegisterScreen/RegisterScreen'
 import { HomeScreen } from './Screens/HomeScreen/HomeScreen'
+import { NewWorkspaceScreen } from './Screens/NewWorkspaceScreen/NewWorkspaceScreen'
 import { ResetPasswordScreen } from './Screens/ResetPasswordScreen/ResetPasswordScreen'
 import { AuthContextProvider } from './context/AuthContext'
 import { WorkspacesContextProvider } from './context/WorkspacesContext'
@@ -41,6 +42,10 @@ const App = () => {
             <Route
               path='/home'
               element={<HomeScreen />}
+            />
+            <Route
+              path='/workspace/new'
+              element={<NewWorkspaceScreen />}
             />
           </Route>
         </Route>

@@ -28,3 +28,37 @@ export async function getWorkspaces() {
 
     return response;
 }
+
+/**
+ * Crea un nuevo espacio de trabajo. El usuario autenticado queda como owner.
+ * @param {string} nombre - Nombre del espacio de trabajo (obligatorio).
+ * @param {string} descripcion - Descripción del espacio (opcional).
+ * @returns {Promise<Object>} Respuesta de la API con el workspace creado.
+ */
+export async function createWorkspace(nombre, descripcion) {
+    const token = localStorage.getItem(AUTH_TOKEN_LOCALSTORAGE_KEY);
+
+    if (!token) {
+        throw new Error("No hay un token de sesión activo");
+    }
+
+    const response_http = await fetch(`${ENVIRONMENT.URL_API}/api/workspace`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            nombre: nombre,
+            descripcion: descripcion
+        })
+    });
+
+    const response = await response_http.json();
+
+    if (!response.ok) {
+        throw new Error(response.message || "Error al crear el espacio de trabajo");
+    }
+
+    return response;
+}
