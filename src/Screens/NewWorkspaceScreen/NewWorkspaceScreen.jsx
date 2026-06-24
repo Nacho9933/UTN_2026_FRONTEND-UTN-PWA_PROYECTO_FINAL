@@ -73,7 +73,7 @@ export const NewWorkspaceScreen = () => {
                     createError && !createLoading &&
                     <>
                         <br />
-                        <span style={{ color: 'red' }}>Error: {createError}</span>
+                        <span className="form-error">Error: {createError}</span>
                     </>
                 }
             </form>

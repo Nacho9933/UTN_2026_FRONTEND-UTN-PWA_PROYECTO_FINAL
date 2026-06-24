@@ -89,7 +89,7 @@ export const RegisterScreen = () => {
                     registerError && !registerLoading &&
                     <>
                         <br />
-                        <span style={{ color: 'red' }}>Error: {registerError}</span>
+                        <span className="form-error">Error: {registerError}</span>
                     </>
                 }
             </form>

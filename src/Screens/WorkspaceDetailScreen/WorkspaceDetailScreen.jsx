@@ -1,12 +1,23 @@
-import React, { useEffect } from 'react'
-import { Link, useParams } from 'react-router'
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router'
 import useForm from '../../hooks/useForm'
 import useRequest from '../../hooks/useRequest'
-import { getWorkspaceById } from '../../services/workspaceService'
-import { getChannels, createChannel } from '../../services/channelService'
+import { getWorkspaceById, updateWorkspace, deleteWorkspace } from '../../services/workspaceService'
+import { getChannels, createChannel, updateChannel, deleteChannel } from '../../services/channelService'
 
 export const WorkspaceDetailScreen = () => {
     const { workspace_id } = useParams()
+    const navigate = useNavigate()
+
+    //estado para editar el workspace (nombre y descripcion)
+    const [editingWorkspace, setEditingWorkspace] = useState(false)
+    const [wsNombre, setWsNombre] = useState('')
+    const [wsDescripcion, setWsDescripcion] = useState('')
+
+    //estado para editar un canal (cual y con que valores)
+    const [editingChannelId, setEditingChannelId] = useState(null)
+    const [chNombre, setChNombre] = useState('')
+    const [chDescripcion, setChDescripcion] = useState('')
 
     //consulta para la info del workspace
     const {
@@ -32,18 +43,52 @@ export const WorkspaceDetailScreen = () => {
         response: createChannelResponse
     } = useRequest()
 
+    //consultas para editar/borrar workspace y canal
+    const { sendRequest: sendRequestUpdateWs, response: updateWsResponse, error: updateWsError } = useRequest()
+    const { sendRequest: sendRequestDeleteWs, response: deleteWsResponse, error: deleteWsError } = useRequest()
+    const { sendRequest: sendRequestUpdateCh, response: updateChResponse } = useRequest()
+    const { sendRequest: sendRequestDeleteCh, response: deleteChResponse } = useRequest()
+
     //apenas entro pido el workspace y sus canales
     useEffect(() => {
         sendRequestWorkspace(() => getWorkspaceById(workspace_id))
         sendRequestChannels(() => getChannels(workspace_id))
     }, [workspace_id])
 
-    //si se creo un canal vuelvo a pedir la lista
+    //si se creo o edito un canal vuelvo a pedir la lista
     useEffect(() => {
         if (createChannelResponse?.ok) {
             sendRequestChannels(() => getChannels(workspace_id))
         }
     }, [createChannelResponse])
+
+    useEffect(() => {
+        if (updateChResponse?.ok) {
+            setEditingChannelId(null)
+            sendRequestChannels(() => getChannels(workspace_id))
+        }
+    }, [updateChResponse])
+
+    useEffect(() => {
+        if (deleteChResponse?.ok) {
+            sendRequestChannels(() => getChannels(workspace_id))
+        }
+    }, [deleteChResponse])
+
+    //si edite el workspace, refresco su info y cierro el modo edicion
+    useEffect(() => {
+        if (updateWsResponse?.ok) {
+            setEditingWorkspace(false)
+            sendRequestWorkspace(() => getWorkspaceById(workspace_id))
+        }
+    }, [updateWsResponse])
+
+    //si borre el workspace, vuelvo al home
+    useEffect(() => {
+        if (deleteWsResponse?.ok) {
+            navigate('/home')
+        }
+    }, [deleteWsResponse])
 
     function onCreateChannel(formData) {
         sendRequestCreateChannel(
@@ -59,17 +104,78 @@ export const WorkspaceDetailScreen = () => {
     const workspace = workspaceResponse?.data?.workspace
     const channels = channelsResponse?.data?.channels || []
 
+    //arranco a editar el workspace: precargo los valores actuales
+    function startEditWorkspace() {
+        setWsNombre(workspace.nombre)
+        setWsDescripcion(workspace.descripcion || '')
+        setEditingWorkspace(true)
+    }
+
+    function saveWorkspace() {
+        if (!wsNombre.trim()) return
+        sendRequestUpdateWs(() => updateWorkspace(workspace_id, wsNombre, wsDescripcion))
+    }
+
+    function onDeleteWorkspace() {
+        if (!window.confirm('¿Seguro que querés borrar este espacio de trabajo? Esta acción no se puede deshacer.')) return
+        sendRequestDeleteWs(() => deleteWorkspace(workspace_id))
+    }
+
+    //arranco a editar un canal
+    function startEditChannel(channel) {
+        setEditingChannelId(channel._id)
+        setChNombre(channel.nombre)
+        setChDescripcion(channel.descripcion || '')
+    }
+
+    function saveChannel(channelId) {
+        if (!chNombre.trim()) return
+        sendRequestUpdateCh(() => updateChannel(workspace_id, channelId, chNombre, chDescripcion))
+    }
+
+    function onDeleteChannel(channelId) {
+        if (!window.confirm('¿Seguro que querés borrar este canal?')) return
+        sendRequestDeleteCh(() => deleteChannel(workspace_id, channelId))
+    }
+
     return (
-        <div style={{ padding: '20px', maxWidth: '900px', margin: '0 auto' }}>
+        <div className="screen-container">
             <p><Link to={'/home'}>← Volver a mis espacios</Link></p>
 
             {/* info del workspace */}
             {workspaceLoading && <p>Cargando espacio de trabajo...</p>}
-            {workspaceError && <p style={{ color: 'red' }}>⚠️ {workspaceError}</p>}
+            {workspaceError && <p className="error-text">⚠️ {workspaceError}</p>}
             {workspace && (
-                <header style={{ borderBottom: '1px solid #ccc', paddingBottom: '12px', marginBottom: '20px' }}>
-                    <h1>{workspace.nombre}</h1>
-                    <p>{workspace.descripcion || 'Sin descripción'}</p>
+                <header className="workspace-header">
+                    {editingWorkspace ? (
+                        <div>
+                            <input
+                                type='text'
+                                value={wsNombre}
+                                onChange={(e) => setWsNombre(e.target.value)}
+                                placeholder='Nombre'
+                                className="workspace-edit-input"
+                            />
+                            <input
+                                type='text'
+                                value={wsDescripcion}
+                                onChange={(e) => setWsDescripcion(e.target.value)}
+                                placeholder='Descripción'
+                                className="workspace-edit-input"
+                            />
+                            <button onClick={saveWorkspace}>Guardar</button>
+                            <button onClick={() => setEditingWorkspace(false)} className="btn-cancel">Cancelar</button>
+                            {updateWsError && <span className="form-error">{updateWsError}</span>}
+                        </div>
+                    ) : (
+                        <div>
+                            <h1>{workspace.nombre}</h1>
+                            <p>{workspace.descripcion || 'Sin descripción'}</p>
+                            <button onClick={startEditWorkspace}>Editar espacio</button>
+                            <button onClick={onDeleteWorkspace} className="btn-danger">Borrar espacio</button>
+                            {deleteWsError && <span className="form-error">{deleteWsError}</span>}
+                        </div>
+                    )}
                 </header>
             )}
 
@@ -77,18 +183,42 @@ export const WorkspaceDetailScreen = () => {
 
             {/* lista de canales */}
             {channelsLoading && <p>Cargando canales...</p>}
-            {channelsError && <p style={{ color: 'red' }}>⚠️ {channelsError}</p>}
+            {channelsError && <p className="error-text">⚠️ {channelsError}</p>}
             {!channelsLoading && !channelsError && (
                 channels.length === 0 ? (
                     <p>Todavía no hay canales. ¡Creá el primero!</p>
                 ) : (
                     <ul>
                         {channels.map((channel) => (
-                            <li key={channel._id}>
-                                <Link to={`/workspace/${workspace_id}/channels/${channel._id}`}>
-                                    <strong># {channel.nombre}</strong>
-                                </Link>
-                                {channel.descripcion && <span> — {channel.descripcion}</span>}
+                            <li key={channel._id} className="channel-item">
+                                {editingChannelId === channel._id ? (
+                                    <span className="channel-edit-row">
+                                        <input
+                                            type='text'
+                                            value={chNombre}
+                                            onChange={(e) => setChNombre(e.target.value)}
+                                            className="channel-edit-input"
+                                        />
+                                        <input
+                                            type='text'
+                                            value={chDescripcion}
+                                            onChange={(e) => setChDescripcion(e.target.value)}
+                                            placeholder='Descripción'
+                                            className="channel-edit-input"
+                                        />
+                                        <button onClick={() => saveChannel(channel._id)}>Guardar</button>
+                                        <button onClick={() => setEditingChannelId(null)}>Cancelar</button>
+                                    </span>
+                                ) : (
+                                    <span>
+                                        <Link to={`/workspace/${workspace_id}/channels/${channel._id}`}>
+                                            <strong># {channel.nombre}</strong>
+                                        </Link>
+                                        {channel.descripcion && <span> — {channel.descripcion}</span>}
+                                        <button onClick={() => startEditChannel(channel)} className="btn-small">Editar</button>
+                                        <button onClick={() => onDeleteChannel(channel._id)} className="btn-small btn-danger">Borrar</button>
+                                    </span>
+                                )}
                             </li>
                         ))}
                     </ul>
@@ -96,7 +226,7 @@ export const WorkspaceDetailScreen = () => {
             )}
 
             {/* form para crear canal */}
-            <form onSubmit={handleSubmit} style={{ marginTop: '20px', borderTop: '1px solid #eee', paddingTop: '16px' }}>
+            <form onSubmit={handleSubmit} className="new-channel-form">
                 <h3>Nuevo canal</h3>
                 <div>
                     <label htmlFor="nombre">Nombre:</label>
@@ -124,7 +254,7 @@ export const WorkspaceDetailScreen = () => {
                 {createChannelError && !createChannelLoading && (
                     <>
                         <br />
-                        <span style={{ color: 'red' }}>Error: {createChannelError}</span>
+                        <span className="form-error">Error: {createChannelError}</span>
                     </>
                 )}
             </form>

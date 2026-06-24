@@ -103,37 +103,37 @@ export const ChannelMessagesScreen = () => {
     const messages = messagesResponse?.data?.messages || []
 
     return (
-        <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+        <div className="screen-container">
             <p><Link to={`/workspace/${workspace_id}`}>← Volver al espacio de trabajo</Link></p>
 
             <h1>Mensajes</h1>
 
             {/* lista de mensajes */}
             {messagesLoading && <p>Cargando mensajes...</p>}
-            {messagesError && <p style={{ color: 'red' }}>⚠️ {messagesError}</p>}
+            {messagesError && <p className="error-text">⚠️ {messagesError}</p>}
             {!messagesLoading && !messagesError && (
-                <div style={{ border: '1px solid #ddd', borderRadius: '8px', padding: '12px', minHeight: '200px', marginBottom: '16px' }}>
+                <div className="messages-list">
                     {messages.length === 0 ? (
-                        <p style={{ color: '#888' }}>Todavía no hay mensajes. ¡Escribí el primero!</p>
+                        <p className="empty-text">Todavía no hay mensajes. ¡Escribí el primero!</p>
                     ) : (
                         messages.map((msg) => {
                             const isMine = msg.fk_user_id?._id === userData?.id
                             return (
-                                <div key={msg._id} style={{ marginBottom: '10px' }}>
+                                <div key={msg._id} className="message-item">
                                     <strong>{msg.fk_user_id?.nombre || 'Usuario'}</strong>
-                                    {isMine && <span style={{ color: '#4a90d9' }}> (vos)</span>}
-                                    <span style={{ color: '#999', fontSize: '12px', marginLeft: '8px' }}>
+                                    {isMine && <span className="message-mine-badge"> (vos)</span>}
+                                    <span className="message-date">
                                         {new Date(msg.fecha_creacion).toLocaleString()}
                                     </span>
 
                                     {/* si estoy editando este mensaje muestro el input, sino el texto */}
                                     {editingId === msg._id ? (
-                                        <div style={{ display: 'flex', gap: '6px', marginTop: '4px' }}>
+                                        <div className="message-edit-row">
                                             <input
                                                 type='text'
                                                 value={editText}
                                                 onChange={(e) => setEditText(e.target.value)}
-                                                style={{ flex: 1, padding: '4px' }}
+                                                className="message-edit-input"
                                             />
                                             <button onClick={() => saveEdit(msg._id)}>Guardar</button>
                                             <button onClick={() => setEditingId(null)}>Cancelar</button>
@@ -144,9 +144,9 @@ export const ChannelMessagesScreen = () => {
 
                                     {/* solo muestro editar/borrar en mis mensajes */}
                                     {isMine && editingId !== msg._id && (
-                                        <div style={{ marginTop: '2px' }}>
-                                            <button onClick={() => startEdit(msg)} style={{ fontSize: '12px', marginRight: '6px' }}>Editar</button>
-                                            <button onClick={() => onDelete(msg._id)} style={{ fontSize: '12px', color: 'red' }}>Borrar</button>
+                                        <div className="message-actions">
+                                            <button onClick={() => startEdit(msg)} className="btn-small">Editar</button>
+                                            <button onClick={() => onDelete(msg._id)} className="btn-small btn-danger">Borrar</button>
                                         </div>
                                     )}
                                 </div>
@@ -157,21 +157,21 @@ export const ChannelMessagesScreen = () => {
             )}
 
             {/* form para mandar mensaje */}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px' }}>
+            <form onSubmit={handleSubmit} className="message-form">
                 <input
                     name='contenido'
                     type='text'
                     placeholder='Escribí un mensaje...'
                     value={formState.contenido}
                     onChange={handleChange}
-                    style={{ flex: 1, padding: '8px' }}
+                    className="message-input"
                 />
                 <button disabled={createLoading}>
                     {createLoading ? 'Enviando...' : 'Enviar'}
                 </button>
             </form>
             {createError && !createLoading && (
-                <span style={{ color: 'red' }}>Error: {createError}</span>
+                <span className="form-error">Error: {createError}</span>
             )}
         </div>
     )

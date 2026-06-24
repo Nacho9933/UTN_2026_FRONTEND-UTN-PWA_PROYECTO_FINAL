@@ -81,11 +81,12 @@ export const LoginScreen = () => {
                     loginRequestError && !loginRequestLoading &&
                     <>
                         <br/>
-                        <span style={{color: 'red'}}>Error: {loginRequestError}</span>
+                        <span className="form-error">Error: {loginRequestError}</span>
                     </>
                 }
             </form>
             <p>Si no tienes cuenta <Link to={'/register'}>Registrate</Link></p>
+            <p><Link to={'/forgot-password'}>¿Olvidaste tu contraseña?</Link></p>
         </div>
     )
 }

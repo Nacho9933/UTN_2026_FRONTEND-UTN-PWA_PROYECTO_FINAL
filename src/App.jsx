@@ -7,6 +7,7 @@ import { NewWorkspaceScreen } from './Screens/NewWorkspaceScreen/NewWorkspaceScr
 import { WorkspaceDetailScreen } from './Screens/WorkspaceDetailScreen/WorkspaceDetailScreen'
 import { ChannelMessagesScreen } from './Screens/ChannelMessagesScreen/ChannelMessagesScreen'
 import { ResetPasswordScreen } from './Screens/ResetPasswordScreen/ResetPasswordScreen'
+import { ForgotPasswordScreen } from './Screens/ForgotPasswordScreen/ForgotPasswordScreen'
 import { AuthContextProvider } from './context/AuthContext'
 import { WorkspacesContextProvider } from './context/WorkspacesContext'
 import AuthMiddleware from './middlewares/AuthMiddleware'
@@ -30,6 +31,10 @@ const App = () => {
           <Route
             path='/reset-password'
             element={<ResetPasswordScreen />}
+          />
+          <Route
+            path='/forgot-password'
+            element={<ForgotPasswordScreen />}
           />
           <Route
             path='/'
