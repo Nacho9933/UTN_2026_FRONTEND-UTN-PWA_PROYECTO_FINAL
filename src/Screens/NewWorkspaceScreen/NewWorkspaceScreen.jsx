@@ -28,7 +28,7 @@ export const NewWorkspaceScreen = () => {
 
     const { formState, handleChange, handleSubmit } = useForm(initial_form_state, onSubmit)
 
-    // Al crear con éxito: refrescamos la lista compartida y volvemos al Home.
+    //si se creo bien, refresco la lista y vuelvo al home
     useEffect(() => {
         if (createResponse?.ok) {
             refetch()

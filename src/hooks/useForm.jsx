@@ -24,6 +24,7 @@ function useForm(initial_form_state, submitFn) {
 
     return {
         formState,
+        setFormState,
         handleChange,
         handleSubmit
     }

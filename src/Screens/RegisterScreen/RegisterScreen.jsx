@@ -26,8 +26,8 @@ export const RegisterScreen = () => {
 
     const { formState, handleChange, handleSubmit } = useForm(initial_form_state, onSubmit)
 
-    // El registro NO devuelve token: el backend exige verificar el email antes de loguear.
-    // Por eso, en vez de redirigir, mostramos un mensaje de "revisa tu correo".
+    //el registro no devuelve token, primero hay que verificar el mail
+    //asi que en vez de redirigir muestro el mensaje de revisa tu correo
     if (registerResponse?.ok) {
         return (
             <div>

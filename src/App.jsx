@@ -4,6 +4,8 @@ import { LoginScreen } from './Screens/LoginScreen/LoginScreen'
 import { RegisterScreen } from './Screens/RegisterScreen/RegisterScreen'
 import { HomeScreen } from './Screens/HomeScreen/HomeScreen'
 import { NewWorkspaceScreen } from './Screens/NewWorkspaceScreen/NewWorkspaceScreen'
+import { WorkspaceDetailScreen } from './Screens/WorkspaceDetailScreen/WorkspaceDetailScreen'
+import { ChannelMessagesScreen } from './Screens/ChannelMessagesScreen/ChannelMessagesScreen'
 import { ResetPasswordScreen } from './Screens/ResetPasswordScreen/ResetPasswordScreen'
 import { AuthContextProvider } from './context/AuthContext'
 import { WorkspacesContextProvider } from './context/WorkspacesContext'
@@ -48,6 +50,14 @@ const App = () => {
               element={<NewWorkspaceScreen />}
             />
           </Route>
+          <Route
+            path='/workspace/:workspace_id'
+            element={<WorkspaceDetailScreen />}
+          />
+          <Route
+            path='/workspace/:workspace_id/channels/:channel_id'
+            element={<ChannelMessagesScreen />}
+          />
         </Route>
 
         <Route
