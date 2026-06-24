@@ -57,3 +57,60 @@ export async function createMessage(workspaceId, channelId, contenido) {
 
     return response;
 }
+
+//edita un mensaje (solo el autor o un admin)
+export async function updateMessage(workspaceId, channelId, messageId, contenido) {
+    const token = localStorage.getItem(AUTH_TOKEN_LOCALSTORAGE_KEY);
+
+    if (!token) {
+        throw new Error("No hay un token de sesión activo");
+    }
+
+    const url = `${ENVIRONMENT.URL_API}/api/workspace/${workspaceId}/channels/${channelId}/messages/${messageId}`;
+
+    const response_http = await fetch(url, {
+        method: 'PUT',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            contenido: contenido
+        })
+    });
+
+    const response = await response_http.json();
+
+    if (!response.ok) {
+        throw new Error(response.message || "Error al editar el mensaje");
+    }
+
+    return response;
+}
+
+//borra un mensaje (solo el autor o un admin)
+export async function deleteMessage(workspaceId, channelId, messageId) {
+    const token = localStorage.getItem(AUTH_TOKEN_LOCALSTORAGE_KEY);
+
+    if (!token) {
+        throw new Error("No hay un token de sesión activo");
+    }
+
+    const url = `${ENVIRONMENT.URL_API}/api/workspace/${workspaceId}/channels/${channelId}/messages/${messageId}`;
+
+    const response_http = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        }
+    });
+
+    const response = await response_http.json();
+
+    if (!response.ok) {
+        throw new Error(response.message || "Error al borrar el mensaje");
+    }
+
+    return response;
+}
