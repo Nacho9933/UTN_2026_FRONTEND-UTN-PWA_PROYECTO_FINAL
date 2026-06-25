@@ -30,7 +30,7 @@ export const RegisterScreen = () => {
     //asi que en vez de redirigir muestro el mensaje de revisa tu correo
     if (registerResponse?.ok) {
         return (
-            <div>
+            <div className="auth-container">
                 <h1>¡Casi listo!</h1>
                 <p>
                     Te enviamos un correo a <strong>{formState.email}</strong> con un enlace
@@ -43,7 +43,7 @@ export const RegisterScreen = () => {
     }
 
     return (
-        <div>
+        <div className="auth-container">
             <h1>Crear cuenta</h1>
 
             <form onSubmit={handleSubmit}>

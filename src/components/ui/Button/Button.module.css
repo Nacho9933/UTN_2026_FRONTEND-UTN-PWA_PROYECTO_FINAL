@@ -1,0 +1,55 @@
+.btn {
+    border: none;
+    border-radius: var(--radius);
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.2s, opacity 0.2s, filter 0.2s;
+}
+.btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+/* primary: el de accion principal */
+.primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+}
+.primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    filter: brightness(1.08);
+}
+
+/* danger: para borrar */
+.danger {
+    background: transparent;
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    color: var(--red);
+}
+.danger:hover:not(:disabled) {
+    background: var(--red);
+    color: white;
+    box-shadow: 0 6px 18px rgba(239, 68, 68, 0.35);
+}
+
+/* subtle y cancel: acciones secundarias */
+.subtle,
+.cancel {
+    background: transparent;
+    border: 1px solid var(--border-2);
+    color: var(--text-muted);
+}
+.subtle:hover:not(:disabled),
+.cancel:hover:not(:disabled) {
+    background: var(--panel-2);
+    color: var(--text);
+}
+
+.small {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.75rem;
+}

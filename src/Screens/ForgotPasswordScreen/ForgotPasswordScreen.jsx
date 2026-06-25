@@ -21,7 +21,7 @@ export const ForgotPasswordScreen = () => {
     //si salio bien muestro un mensaje generico (no digo si el mail existe o no)
     if (resetResponse?.ok) {
         return (
-            <div>
+            <div className="auth-container">
                 <h1>Revisá tu correo</h1>
                 <p>
                     Si tenés una cuenta asociada a ese email, te enviamos un enlace para
@@ -33,7 +33,7 @@ export const ForgotPasswordScreen = () => {
     }
 
     return (
-        <div>
+        <div className="auth-container">
             <h1>¿Olvidaste tu contraseña?</h1>
             <p>Ingresá tu email y te mandamos un enlace para restablecerla.</p>
 

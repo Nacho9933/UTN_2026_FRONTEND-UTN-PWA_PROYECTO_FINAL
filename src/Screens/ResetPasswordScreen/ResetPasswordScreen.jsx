@@ -5,8 +5,8 @@ import { resetPasswordConfirm } from '../../services/authService'
 
 export const ResetPasswordScreen = () => {
     const [searchParams] = useSearchParams()
-    //el backend manda el link con ?token=...
-    const token = searchParams.get('token')
+    //el backend manda el link con ?reset_password_token=...
+    const token = searchParams.get('reset_password_token')
 
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')
@@ -43,7 +43,7 @@ export const ResetPasswordScreen = () => {
     //si salio bien aviso y mando al login
     if (confirmResponse?.ok) {
         return (
-            <div>
+            <div className="auth-container">
                 <h1>¡Contraseña actualizada!</h1>
                 <p>Ya podés <Link to={'/login'}>iniciar sesión</Link> con tu nueva contraseña.</p>
             </div>
@@ -51,7 +51,7 @@ export const ResetPasswordScreen = () => {
     }
 
     return (
-        <div>
+        <div className="auth-container">
             <h1>Restablecer contraseña</h1>
 
             <form onSubmit={onSubmit}>

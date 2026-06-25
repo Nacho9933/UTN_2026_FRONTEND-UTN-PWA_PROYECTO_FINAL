@@ -145,7 +145,7 @@ export const ChannelMessagesScreen = () => {
                                     {/* solo muestro editar/borrar en mis mensajes */}
                                     {isMine && editingId !== msg._id && (
                                         <div className="message-actions">
-                                            <button onClick={() => startEdit(msg)} className="btn-small">Editar</button>
+                                            <button onClick={() => startEdit(msg)} className="btn-small btn-subtle">Editar</button>
                                             <button onClick={() => onDelete(msg._id)} className="btn-small btn-danger">Borrar</button>
                                         </div>
                                     )}

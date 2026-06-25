@@ -5,6 +5,13 @@ import useRequest from '../../hooks/useRequest'
 import { getWorkspaceById, updateWorkspace, deleteWorkspace } from '../../services/workspaceService'
 import { getChannels, createChannel, updateChannel, deleteChannel } from '../../services/channelService'
 
+//roles tal cual los maneja el backend
+const ROLES = {
+    OWNER: 'dueño',
+    ADMIN: 'admin',
+    USER: 'usuario'
+}
+
 export const WorkspaceDetailScreen = () => {
     const { workspace_id } = useParams()
     const navigate = useNavigate()
@@ -104,6 +111,12 @@ export const WorkspaceDetailScreen = () => {
     const workspace = workspaceResponse?.data?.workspace
     const channels = channelsResponse?.data?.channels || []
 
+    //mi rol en este workspace lo manda el backend, lo uso para decidir que botones mostrar
+    const myRole = workspaceResponse?.data?.membership?.rol
+    const canEditWorkspace = myRole === ROLES.ADMIN || myRole === ROLES.OWNER
+    const canDeleteWorkspace = myRole === ROLES.OWNER //borrar workspace es solo del dueño
+    const canManageChannels = myRole === ROLES.ADMIN || myRole === ROLES.OWNER
+
     //arranco a editar el workspace: precargo los valores actuales
     function startEditWorkspace() {
         setWsNombre(workspace.nombre)
@@ -171,13 +184,15 @@ export const WorkspaceDetailScreen = () => {
                         <div>
                             <h1>{workspace.nombre}</h1>
                             <p>{workspace.descripcion || 'Sin descripción'}</p>
-                            <button onClick={startEditWorkspace}>Editar espacio</button>
-                            <button onClick={onDeleteWorkspace} className="btn-danger">Borrar espacio</button>
+                            {canEditWorkspace && <button onClick={startEditWorkspace}>Editar espacio</button>}
+                            {canDeleteWorkspace && <button onClick={onDeleteWorkspace} className="btn-danger">Borrar espacio</button>}
                             {deleteWsError && <span className="form-error">{deleteWsError}</span>}
                         </div>
                     )}
                 </header>
             )}
+
+            <p><Link to={`/workspace/${workspace_id}/members`}>👥 Ver miembros</Link></p>
 
             <h2>Canales</h2>
 
@@ -215,8 +230,8 @@ export const WorkspaceDetailScreen = () => {
                                             <strong># {channel.nombre}</strong>
                                         </Link>
                                         {channel.descripcion && <span> — {channel.descripcion}</span>}
-                                        <button onClick={() => startEditChannel(channel)} className="btn-small">Editar</button>
-                                        <button onClick={() => onDeleteChannel(channel._id)} className="btn-small btn-danger">Borrar</button>
+                                        {canManageChannels && <button onClick={() => startEditChannel(channel)} className="btn-small btn-subtle">Editar</button>}
+                                        {canManageChannels && <button onClick={() => onDeleteChannel(channel._id)} className="btn-small btn-danger">Borrar</button>}
                                     </span>
                                 )}
                             </li>

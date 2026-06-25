@@ -1,11 +1,13 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router'
+import { LandingScreen } from './Screens/LandingScreen/LandingScreen'
 import { LoginScreen } from './Screens/LoginScreen/LoginScreen'
 import { RegisterScreen } from './Screens/RegisterScreen/RegisterScreen'
 import { HomeScreen } from './Screens/HomeScreen/HomeScreen'
 import { NewWorkspaceScreen } from './Screens/NewWorkspaceScreen/NewWorkspaceScreen'
 import { WorkspaceDetailScreen } from './Screens/WorkspaceDetailScreen/WorkspaceDetailScreen'
 import { ChannelMessagesScreen } from './Screens/ChannelMessagesScreen/ChannelMessagesScreen'
+import { MembersScreen } from './Screens/MembersScreen/MembersScreen'
 import { ResetPasswordScreen } from './Screens/ResetPasswordScreen/ResetPasswordScreen'
 import { ForgotPasswordScreen } from './Screens/ForgotPasswordScreen/ForgotPasswordScreen'
 import { AuthContextProvider } from './context/AuthContext'
@@ -38,7 +40,7 @@ const App = () => {
           />
           <Route
             path='/'
-            element={<LoginScreen />}
+            element={<LandingScreen />}
           />
         </Route>
 
@@ -62,6 +64,10 @@ const App = () => {
           <Route
             path='/workspace/:workspace_id/channels/:channel_id'
             element={<ChannelMessagesScreen />}
+          />
+          <Route
+            path='/workspace/:workspace_id/members'
+            element={<MembersScreen />}
           />
         </Route>
 
