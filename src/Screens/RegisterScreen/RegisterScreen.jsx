@@ -1,10 +1,13 @@
-import React from 'react'
 import { Link } from 'react-router'
 import useForm from '../../hooks/useForm'
 import useRequest from '../../hooks/useRequest'
 import { register } from '../../services/authService'
+import { FormField } from '../../components/ui/FormField/FormField'
+import { Button } from '../../components/ui/Button/Button'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export const RegisterScreen = () => {
+    useDocumentTitle('Crear cuenta')
     const {
         sendRequest: sendRequestRegister,
         loading: registerLoading,
@@ -27,7 +30,6 @@ export const RegisterScreen = () => {
     const { formState, handleChange, handleSubmit } = useForm(initial_form_state, onSubmit)
 
     //el registro no devuelve token, primero hay que verificar el mail
-    //asi que en vez de redirigir muestro el mensaje de revisa tu correo
     if (registerResponse?.ok) {
         return (
             <div className="auth-container">
@@ -47,51 +49,16 @@ export const RegisterScreen = () => {
             <h1>Crear cuenta</h1>
 
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="name">Nombre:</label>
-                    <input
-                        id='name'
-                        name='name'
-                        type='text'
-                        value={formState.name}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        id='email'
-                        name='email'
-                        type='email'
-                        value={formState.email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Contraseña:</label>
-                    <input
-                        id='password'
-                        name='password'
-                        type='password'
-                        value={formState.password}
-                        onChange={handleChange}
-                    />
-                </div>
+                <FormField label="Nombre:" id="name" name="name" type="text" value={formState.name} onChange={handleChange} />
+                <FormField label="Email:" id="email" name="email" type="email" value={formState.email} onChange={handleChange} />
+                <FormField label="Contraseña:" id="password" name="password" type="password" value={formState.password} onChange={handleChange} />
 
-                <button disabled={registerLoading}>
-                    {
-                        registerLoading
-                            ? 'Creando cuenta...'
-                            : 'Registrarme'
-                    }
-                </button>
-                {
-                    registerError && !registerLoading &&
-                    <>
-                        <br />
-                        <span className="form-error">Error: {registerError}</span>
-                    </>
-                }
+                <Button disabled={registerLoading}>
+                    {registerLoading ? 'Creando cuenta...' : 'Registrarme'}
+                </Button>
+                {registerError && !registerLoading && (
+                    <span className="form-error">Error: {registerError}</span>
+                )}
             </form>
             <p>¿Ya tenés cuenta? <Link to={'/login'}>Iniciá sesión</Link></p>
         </div>

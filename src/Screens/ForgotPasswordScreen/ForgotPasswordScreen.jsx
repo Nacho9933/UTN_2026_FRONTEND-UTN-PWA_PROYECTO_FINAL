@@ -1,10 +1,13 @@
-import React from 'react'
 import { Link } from 'react-router'
 import useForm from '../../hooks/useForm'
 import useRequest from '../../hooks/useRequest'
 import { resetPasswordRequest } from '../../services/authService'
+import { FormField } from '../../components/ui/FormField/FormField'
+import { Button } from '../../components/ui/Button/Button'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export const ForgotPasswordScreen = () => {
+    useDocumentTitle('Recuperar contraseña')
     const {
         sendRequest: sendRequestReset,
         loading: resetLoading,
@@ -18,7 +21,7 @@ export const ForgotPasswordScreen = () => {
 
     const { formState, handleChange, handleSubmit } = useForm({ email: '' }, onSubmit)
 
-    //si salio bien muestro un mensaje generico (no digo si el mail existe o no)
+    //mensaje generico (no digo si el mail existe o no)
     if (resetResponse?.ok) {
         return (
             <div className="auth-container">
@@ -38,25 +41,13 @@ export const ForgotPasswordScreen = () => {
             <p>Ingresá tu email y te mandamos un enlace para restablecerla.</p>
 
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="email">Email:</label>
-                    <input
-                        id='email'
-                        name='email'
-                        type='email'
-                        value={formState.email}
-                        onChange={handleChange}
-                    />
-                </div>
+                <FormField label="Email:" id="email" name="email" type="email" value={formState.email} onChange={handleChange} />
 
-                <button disabled={resetLoading}>
+                <Button disabled={resetLoading}>
                     {resetLoading ? 'Enviando...' : 'Enviar enlace'}
-                </button>
+                </Button>
                 {resetError && !resetLoading && (
-                    <>
-                        <br />
-                        <span className="form-error">Error: {resetError}</span>
-                    </>
+                    <span className="form-error">Error: {resetError}</span>
                 )}
             </form>
             <p><Link to={'/login'}>Volver al login</Link></p>

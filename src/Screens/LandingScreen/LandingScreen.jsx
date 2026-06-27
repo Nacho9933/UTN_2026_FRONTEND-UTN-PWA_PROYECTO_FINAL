@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router'
 import { Button } from '../../components/ui/Button/Button'
 import styles from './LandingScreen.module.css'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export const LandingScreen = () => {
+    useDocumentTitle()
     const navigate = useNavigate()
 
     return (

@@ -1,11 +1,16 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 import useForm from '../../hooks/useForm'
 import useRequest from '../../hooks/useRequest'
 import { createWorkspace } from '../../services/workspaceService'
 import { WorkspacesContext } from '../../context/WorkspacesContext'
+import { FormField } from '../../components/ui/FormField/FormField'
+import { Button } from '../../components/ui/Button/Button'
+import styles from './NewWorkspaceScreen.module.css'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export const NewWorkspaceScreen = () => {
+    useDocumentTitle('Nuevo espacio')
     const navigate = useNavigate()
     const { refetch } = useContext(WorkspacesContext)
     const {
@@ -37,47 +42,22 @@ export const NewWorkspaceScreen = () => {
     }, [createResponse])
 
     return (
-        <div>
+        <div className={styles.container}>
             <h1>Nuevo espacio de trabajo</h1>
+            <p className={styles.subtitle}>Creá un espacio para tu equipo o proyecto.</p>
 
             <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="nombre">Nombre:</label>
-                    <input
-                        id='nombre'
-                        name='nombre'
-                        type='text'
-                        value={formState.nombre}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="descripcion">Descripción (opcional):</label>
-                    <input
-                        id='descripcion'
-                        name='descripcion'
-                        type='text'
-                        value={formState.descripcion}
-                        onChange={handleChange}
-                    />
-                </div>
+                <FormField label="Nombre:" id="nombre" name="nombre" type="text" value={formState.nombre} onChange={handleChange} />
+                <FormField label="Descripción (opcional):" id="descripcion" name="descripcion" type="text" value={formState.descripcion} onChange={handleChange} />
 
-                <button disabled={createLoading}>
-                    {
-                        createLoading
-                            ? 'Creando...'
-                            : 'Crear espacio'
-                    }
-                </button>
-                {
-                    createError && !createLoading &&
-                    <>
-                        <br />
-                        <span className="form-error">Error: {createError}</span>
-                    </>
-                }
+                <Button disabled={createLoading}>
+                    {createLoading ? 'Creando...' : 'Crear espacio'}
+                </Button>
+                {createError && !createLoading && (
+                    <span className="form-error">Error: {createError}</span>
+                )}
             </form>
-            <p><Link to={'/home'}>Volver al inicio</Link></p>
+            <Link to={'/home'} className={styles.back}>← Volver al inicio</Link>
         </div>
     )
 }

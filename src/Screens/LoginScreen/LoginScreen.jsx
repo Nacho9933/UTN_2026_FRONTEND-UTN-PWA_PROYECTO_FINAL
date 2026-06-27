@@ -6,8 +6,10 @@ import useRequest from '../../hooks/useRequest'
 import { AuthContext } from '../../context/AuthContext'
 import { FormField } from '../../components/ui/FormField/FormField'
 import { Button } from '../../components/ui/Button/Button'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export const LoginScreen = () => {
+    useDocumentTitle('Iniciar sesión')
     const { login: syncroLogin } = useContext(AuthContext)
     const navigate = useNavigate()
     const {

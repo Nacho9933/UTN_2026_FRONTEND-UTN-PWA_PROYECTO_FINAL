@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Link, Navigate, useSearchParams } from 'react-router'
 import useRequest from '../../hooks/useRequest'
 import { resetPasswordConfirm } from '../../services/authService'
+import { FormField } from '../../components/ui/FormField/FormField'
+import { Button } from '../../components/ui/Button/Button'
+import useDocumentTitle from '../../hooks/useDocumentTitle'
 
 export const ResetPasswordScreen = () => {
+    useDocumentTitle('Restablecer contraseña')
     const [searchParams] = useSearchParams()
     //el backend manda el link con ?reset_password_token=...
     const token = searchParams.get('reset_password_token')
@@ -55,43 +59,14 @@ export const ResetPasswordScreen = () => {
             <h1>Restablecer contraseña</h1>
 
             <form onSubmit={onSubmit}>
-                <div>
-                    <label htmlFor="password">Nueva contraseña:</label>
-                    <input
-                        id='password'
-                        name='password'
-                        type='password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="repeatPassword">Repetir contraseña:</label>
-                    <input
-                        id='repeatPassword'
-                        name='repeatPassword'
-                        type='password'
-                        value={repeatPassword}
-                        onChange={(e) => setRepeatPassword(e.target.value)}
-                    />
-                </div>
+                <FormField label="Nueva contraseña:" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                <FormField label="Repetir contraseña:" id="repeatPassword" name="repeatPassword" type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
 
-                <button disabled={confirmLoading}>
+                <Button disabled={confirmLoading}>
                     {confirmLoading ? 'Guardando...' : 'Guardar nueva contraseña'}
-                </button>
-
-                {validationError && (
-                    <>
-                        <br />
-                        <span className="form-error">{validationError}</span>
-                    </>
-                )}
-                {confirmError && !confirmLoading && (
-                    <>
-                        <br />
-                        <span className="form-error">Error: {confirmError}</span>
-                    </>
-                )}
+                </Button>
+                {validationError && <span className="form-error">{validationError}</span>}
+                {confirmError && !confirmLoading && <span className="form-error">Error: {confirmError}</span>}
             </form>
         </div>
     )

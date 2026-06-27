@@ -47,6 +47,9 @@
 .cancel:hover:not(:disabled) {
     background: var(--panel-2);
     color: var(--text);
+    transform: none;
+    box-shadow: none;
+    filter: none;
 }
 
 .small {

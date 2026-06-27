@@ -1,0 +1,375 @@
+.sidebar {
+    width: 270px;
+    flex-shrink: 0;
+    background: #1a1126;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+}
+
+/* ===== encabezado del workspace ===== */
+.wsHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.7rem 0.6rem 0.7rem 0.85rem;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+.wsNameBtn {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: transparent;
+    border: none;
+    padding: 0.2rem 0.25rem;
+    border-radius: 7px;
+    cursor: pointer;
+    text-align: left;
+}
+.wsNameBtn:hover {
+    background: rgba(255, 255, 255, 0.07);
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+.wsName {
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.chevron {
+    flex-shrink: 0;
+    color: var(--text-muted);
+}
+.wsActions {
+    display: flex;
+    gap: 0.05rem;
+    flex-shrink: 0;
+}
+.wsActions button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+.wsActions button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text);
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+
+/* ===== buscador ===== */
+.searchWrap {
+    position: relative;
+    flex-shrink: 0;
+    padding: 0.6rem 0.7rem 0.5rem;
+}
+.searchIcon {
+    position: absolute;
+    left: 1.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-dim);
+    pointer-events: none;
+}
+.search {
+    width: 100%;
+    padding: 0.45rem 0.6rem 0.45rem 2rem;
+    font-size: 0.85rem;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+.search:focus {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: var(--border-2);
+    box-shadow: none;
+}
+
+/* ===== zona scrolleable ===== */
+.scroll {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.3rem 0.5rem 1rem;
+}
+
+/* ===== items de navegacion (decorativos) ===== */
+.navList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    margin-bottom: 0.4rem;
+}
+.navItem {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    width: 100%;
+    padding: 0.42rem 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.navItem:hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+.navIcon {
+    flex-shrink: 0;
+    color: var(--text-dim);
+}
+
+/* ===== grupos con titulo (Favoritos / Canales / DMs / Apps) ===== */
+.group {
+    margin-top: 0.55rem;
+}
+.groupHeader {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    width: 100%;
+    padding: 0.3rem 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 700;
+    text-align: left;
+    cursor: pointer;
+}
+.groupHeader:hover {
+    background: rgba(255, 255, 255, 0.05);
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+.groupTitle {
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.groupChevron {
+    flex-shrink: 0;
+    color: var(--text-dim);
+    transition: transform 0.15s;
+}
+.collapsed {
+    transform: rotate(-90deg);
+}
+.groupHint {
+    color: var(--text-dim);
+    font-size: 0.75rem;
+    margin: 0.1rem 0 0;
+    padding: 0 0.5rem 0 1.9rem;
+    line-height: 1.4;
+}
+.count {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: var(--text-muted);
+    background: rgba(255, 255, 255, 0.08);
+    padding: 0.05rem 0.38rem;
+    border-radius: 10px;
+}
+.addInline {
+    flex-shrink: 0;
+    font-size: 0.95rem;
+    line-height: 1;
+    padding: 0.1rem 0.25rem;
+    border-radius: 5px;
+    color: var(--text-muted);
+}
+.addInline:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text);
+}
+
+/* ===== lista de canales ===== */
+.channelList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    margin-top: 0.1rem;
+}
+.channelRow {
+    display: flex;
+    align-items: center;
+}
+.channel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    padding: 0.38rem 0.5rem 0.38rem 1.6rem;
+    border-radius: 7px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background 0.15s, color 0.15s, transform 0.15s;
+}
+.channel:not(.channelActive):hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    text-decoration: none;
+    transform: translateX(3px);
+}
+.channelActive,
+.channelActive:hover {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    transform: none;
+}
+.hash {
+    opacity: 0.6;
+    font-weight: 700;
+}
+.iconBtns {
+    display: flex;
+    gap: 0.05rem;
+    flex-shrink: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+.channelRow:hover .iconBtns {
+    opacity: 1;
+}
+.iconBtns button {
+    background: transparent;
+    border: none;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.78rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 6px;
+    opacity: 0.65;
+}
+.iconBtns button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 1;
+    transform: none;
+    box-shadow: none;
+    filter: none;
+}
+.noChannels {
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    padding: 0.3rem 0.5rem 0.3rem 1.6rem;
+    margin: 0;
+}
+
+.addForm {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.4rem;
+    padding: 0 0.5rem 0 1.6rem;
+}
+.addInput {
+    flex: 1;
+    min-width: 0;
+    padding: 0.38rem 0.55rem;
+    font-size: 0.82rem;
+}
+
+/* ===== lista de mensajes directos ===== */
+.dmRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem 0.35rem 0.65rem;
+    border-radius: 7px;
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    transition: background 0.15s, color 0.15s;
+}
+.dmRow:not(.dmActive):hover {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text);
+    text-decoration: none;
+}
+.dmActive,
+.dmActive:hover {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+}
+.dmAvatar {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.7rem;
+}
+.dmName {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.dmColor0 { background: linear-gradient(135deg, #6366f1, #a855f7); }
+.dmColor1 { background: linear-gradient(135deg, #ec4899, #f43f5e); }
+.dmColor2 { background: linear-gradient(135deg, #f59e0b, #f97316); }
+.dmColor3 { background: linear-gradient(135deg, #10b981, #059669); }
+.dmColor4 { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+.dmColor5 { background: linear-gradient(135deg, #8b5cf6, #6366f1); }
+
+/* ===== item de app (Slack, decorativo activo) ===== */
+.appRow {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.1rem;
+    padding: 0.42rem 0.5rem 0.42rem 0.6rem;
+    border-radius: 7px;
+    color: white;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+}
+.slackDot {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    background: white;
+    flex-shrink: 0;
+    -webkit-mask: radial-gradient(circle at 30% 30%, transparent 2px, #000 2.5px) ;
+}

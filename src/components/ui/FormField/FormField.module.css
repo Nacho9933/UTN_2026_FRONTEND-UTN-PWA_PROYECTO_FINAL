@@ -21,9 +21,9 @@
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 .input:focus {
-    border-color: var(--accent);
+    border-color: var(--accent-2);
     background-color: var(--panel);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25);
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.25);
 }
 .input::placeholder {
     color: var(--text-dim);

@@ -5,9 +5,10 @@ import { LoginScreen } from './Screens/LoginScreen/LoginScreen'
 import { RegisterScreen } from './Screens/RegisterScreen/RegisterScreen'
 import { HomeScreen } from './Screens/HomeScreen/HomeScreen'
 import { NewWorkspaceScreen } from './Screens/NewWorkspaceScreen/NewWorkspaceScreen'
-import { WorkspaceDetailScreen } from './Screens/WorkspaceDetailScreen/WorkspaceDetailScreen'
-import { ChannelMessagesScreen } from './Screens/ChannelMessagesScreen/ChannelMessagesScreen'
-import { MembersScreen } from './Screens/MembersScreen/MembersScreen'
+import { ChatLayout, ChatEmpty } from './Screens/ChatLayout/ChatLayout'
+import { MessagesPanel } from './components/chat/MessagesPanel/MessagesPanel'
+import { MembersPanel } from './components/chat/MembersPanel/MembersPanel'
+import { DMPanel } from './components/chat/DMPanel/DMPanel'
 import { ResetPasswordScreen } from './Screens/ResetPasswordScreen/ResetPasswordScreen'
 import { ForgotPasswordScreen } from './Screens/ForgotPasswordScreen/ForgotPasswordScreen'
 import { AuthContextProvider } from './context/AuthContext'
@@ -57,18 +58,12 @@ const App = () => {
               element={<NewWorkspaceScreen />}
             />
           </Route>
-          <Route
-            path='/workspace/:workspace_id'
-            element={<WorkspaceDetailScreen />}
-          />
-          <Route
-            path='/workspace/:workspace_id/channels/:channel_id'
-            element={<ChannelMessagesScreen />}
-          />
-          <Route
-            path='/workspace/:workspace_id/members'
-            element={<MembersScreen />}
-          />
+          <Route path='/workspace/:workspace_id' element={<ChatLayout />}>
+            <Route index element={<ChatEmpty />} />
+            <Route path='channels/:channel_id' element={<MessagesPanel />} />
+            <Route path='dm/:user_id' element={<DMPanel />} />
+            <Route path='members' element={<MembersPanel />} />
+          </Route>
         </Route>
 
         <Route

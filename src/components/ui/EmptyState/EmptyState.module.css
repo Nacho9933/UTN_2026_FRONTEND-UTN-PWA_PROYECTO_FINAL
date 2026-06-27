@@ -1,0 +1,46 @@
+.box {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background: var(--panel);
+    border: 2px dashed var(--border-2);
+    border-radius: var(--radius-lg);
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+.box.error {
+    border-style: solid;
+    border-color: rgba(239, 68, 68, 0.3);
+    background: rgba(239, 68, 68, 0.08);
+}
+.icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--text-dim);
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+}
+.error .icon {
+    background: rgba(239, 68, 68, 0.12);
+    color: #fca5a5;
+}
+.title {
+    color: var(--text);
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+.error .title { color: #fca5a5; }
+.desc {
+    margin: 0;
+    max-width: 380px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
