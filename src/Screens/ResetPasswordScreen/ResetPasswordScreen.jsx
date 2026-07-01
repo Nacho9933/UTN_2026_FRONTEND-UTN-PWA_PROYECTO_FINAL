@@ -59,8 +59,8 @@ export const ResetPasswordScreen = () => {
             <h1>Restablecer contraseña</h1>
 
             <form onSubmit={onSubmit}>
-                <FormField label="Nueva contraseña:" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <FormField label="Repetir contraseña:" id="repeatPassword" name="repeatPassword" type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} />
+                <FormField label="Nueva contraseña:" id="password" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} withToggle />
+                <FormField label="Repetir contraseña:" id="repeatPassword" name="repeatPassword" type="password" value={repeatPassword} onChange={(e) => setRepeatPassword(e.target.value)} withToggle />
 
                 <Button disabled={confirmLoading}>
                     {confirmLoading ? 'Guardando...' : 'Guardar nueva contraseña'}

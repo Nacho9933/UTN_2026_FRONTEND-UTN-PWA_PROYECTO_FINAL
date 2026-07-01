@@ -8,6 +8,11 @@
     color: var(--text-muted);
     margin-bottom: 0.35rem;
 }
+.inputWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 .input {
     width: 100%;
     background-color: var(--bg-soft);
@@ -19,6 +24,33 @@
     font-family: inherit;
     outline: none;
     transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+/* deja lugar a la derecha para el boton de ver/ocultar, asi el texto nunca lo toca */
+.hasToggle {
+    padding-right: 2.9rem;
+}
+.toggle {
+    position: absolute;
+    right: 0.4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    /* sutil por defecto para no distraer mientras se escribe */
+    color: var(--text-dim);
+    background: transparent;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: color 0.15s, background 0.15s;
+}
+.toggle:hover {
+    color: var(--text);
+    background: rgba(255, 255, 255, 0.07);
 }
 .input:focus {
     border-color: var(--accent-2);

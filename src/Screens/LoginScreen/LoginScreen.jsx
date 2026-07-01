@@ -60,6 +60,7 @@ export const LoginScreen = () => {
                     type="password"
                     value={formState.password}
                     onChange={handleChange}
+                    withToggle
                 />
 
                 <Button disabled={loginRequestLoading || loginRequestResponse?.ok}>

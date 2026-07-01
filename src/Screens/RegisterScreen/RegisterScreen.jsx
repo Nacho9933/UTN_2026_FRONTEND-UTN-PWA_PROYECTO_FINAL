@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Link } from 'react-router'
 import useForm from '../../hooks/useForm'
 import useRequest from '../../hooks/useRequest'
@@ -15,13 +16,22 @@ export const RegisterScreen = () => {
         response: registerResponse
     } = useRequest()
 
+    const [matchError, setMatchError] = useState('')
+
     const initial_form_state = {
         name: '',
         email: '',
-        password: ''
+        password: '',
+        password2: ''
     }
 
     function onSubmit(formData) {
+        //valido que las dos contraseñas coincidan antes de mandar al backend
+        if (formData.password !== formData.password2) {
+            setMatchError('Las contraseñas no coinciden')
+            return
+        }
+        setMatchError('')
         sendRequestRegister(
             () => register(formData.name, formData.email, formData.password)
         )
@@ -51,7 +61,17 @@ export const RegisterScreen = () => {
             <form onSubmit={handleSubmit}>
                 <FormField label="Nombre:" id="name" name="name" type="text" value={formState.name} onChange={handleChange} />
                 <FormField label="Email:" id="email" name="email" type="email" value={formState.email} onChange={handleChange} />
-                <FormField label="Contraseña:" id="password" name="password" type="password" value={formState.password} onChange={handleChange} />
+                <FormField label="Contraseña:" id="password" name="password" type="password" value={formState.password} onChange={handleChange} withToggle />
+                <FormField
+                    label="Repetir contraseña:"
+                    id="password2"
+                    name="password2"
+                    type="password"
+                    value={formState.password2}
+                    onChange={(e) => { handleChange(e); if (matchError) setMatchError('') }}
+                    withToggle
+                    error={matchError}
+                />
 
                 <Button disabled={registerLoading}>
                     {registerLoading ? 'Creando cuenta...' : 'Registrarme'}

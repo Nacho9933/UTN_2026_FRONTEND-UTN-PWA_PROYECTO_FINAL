@@ -7,6 +7,7 @@ import {
 } from 'lucide-react'
 import useForm from '../../../hooks/useForm'
 import useRequest from '../../../hooks/useRequest'
+import useLiveMessages from '../../../hooks/useLiveMessages'
 import { getConversation, sendDirectMessage, updateDirectMessage, deleteDirectMessage } from '../../../services/directMessageService'
 import { AuthContext } from '../../../context/AuthContext'
 import { Button } from '../../ui/Button/Button'
@@ -65,24 +66,23 @@ export const DMPanel = () => {
     const composerRef = useRef(null)
 
     const {
-        sendRequest: sendRequestMessages,
+        messages,
         loading: messagesLoading,
         error: messagesError,
-        response: messagesResponse
-    } = useRequest()
+        refresh: refreshMessages
+    } = useLiveMessages(() => getConversation(user_id), [user_id])
     const { sendRequest: sendRequestCreate, loading: createLoading, error: createError, response: createResponse } = useRequest()
     const { sendRequest: sendRequestUpdate, response: updateResponse } = useRequest()
     const { sendRequest: sendRequestDelete, response: deleteResponse } = useRequest()
 
-    //al entrar o cambiar de conversacion pido los mensajes y enfoco el input
+    //al entrar o cambiar de conversacion enfoco el input (los mensajes los trae useLiveMessages)
     useEffect(() => {
-        sendRequestMessages(() => getConversation(user_id))
         composerRef.current?.focus()
     }, [user_id])
 
     useEffect(() => {
         if (createResponse?.ok) {
-            sendRequestMessages(() => getConversation(user_id))
+            refreshMessages()
             reloadConversations?.()
             setFormState({ contenido: '' })
         }
@@ -91,18 +91,16 @@ export const DMPanel = () => {
     useEffect(() => {
         if (updateResponse?.ok) {
             setEditingId(null)
-            sendRequestMessages(() => getConversation(user_id))
+            refreshMessages()
         }
     }, [updateResponse])
 
     useEffect(() => {
         if (deleteResponse?.ok) {
-            sendRequestMessages(() => getConversation(user_id))
+            refreshMessages()
             reloadConversations?.()
         }
     }, [deleteResponse])
-
-    const messages = messagesResponse?.data?.messages || []
 
     //cuando cambia la cantidad de mensajes, bajo el scroll al ultimo
     useEffect(() => {

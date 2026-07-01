@@ -9,6 +9,14 @@
     overflow: hidden;
 }
 
+/* en mobile el drawer (rail 68px + sidebar) no debe exceder el viewport:
+   limito el sidebar para que en 320px siga entrando y quede franja de overlay */
+@media (max-width: 768px) {
+    .sidebar {
+        width: min(270px, calc(100vw - 68px - 44px));
+    }
+}
+
 /* ===== encabezado del workspace ===== */
 .wsHeader {
     display: flex;
